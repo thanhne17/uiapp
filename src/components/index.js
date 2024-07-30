@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useEffect } from 'react';
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -12,6 +13,8 @@ const navigation = [
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [pcMenuOpen, setPcMenuOpen] = useState(false);
+  const [posY, setPosY] = useState(0);
+  const [currentPosY, setCurrentPosY] = useState(0);
 
   const onDragHandler = (e) => {
     console.log(e);
@@ -25,17 +28,27 @@ export default function Example() {
     e.target.style.background = '#1e293b';
   };
 
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > posY) {
+      setPosY(currentPosY);
+      setCurrentPosY(window.scrollY)
+    }
+  })
+
+  window.addEventListener("scroll", () => {
+    console.log(window.scrollY)
+  })
   return (
-    <div>
+    <div className='h-dvh'>
       <header className="absolute inset-x-0 top-0 z-50">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <span className="sr-only">Your Company</span>
             <div className='relative'>
-              <svg onClick={()=>{setPcMenuOpen(!pcMenuOpen)}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <svg onClick={() => { setPcMenuOpen(!pcMenuOpen) }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
               </svg>
-              <div draggable onDragEnd={(e)=>{handleDragEnd(e)}} onDragStart={(e)=>{handleDragStart(e)}} onDrag={()=>{onDragHandler()}} className={`absolute top-10 left-0 bg-regal-blue p-2 rounded ${pcMenuOpen ? "visible" : "hidden"}`}>
+              <div draggable onDragEnd={(e) => { handleDragEnd(e) }} onDragStart={(e) => { handleDragStart(e) }} onDrag={() => { onDragHandler() }} className={`absolute top-10 left-0 bg-regal-blue p-2 rounded ${pcMenuOpen ? "visible" : "hidden"}`}>
                 <ul>
                   <li className='flex p-2 text-white items-center'>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
