@@ -35,9 +35,21 @@ export default function Example() {
     }
   })
 
-  window.addEventListener("scroll", () => {
-    console.log(window.scrollY)
-  })
+  useEffect(()=>{
+    if (currentPosY < posY) {
+      document.querySelector("header").className = "fixed inset-y-1.5"
+      console.log(document.querySelector("header"));
+    }
+    else {
+      document.querySelector("header").className = "absolute inset-x-0 top-0 z-50"
+
+    }
+  }, [currentPosY, posY])
+
+  // console.log(currentPosY, "c");
+  // console.log(posY, "p");
+  // console.log("----------------");
+
   return (
     <div className='h-dvh'>
       <header className="absolute inset-x-0 top-0 z-50">
